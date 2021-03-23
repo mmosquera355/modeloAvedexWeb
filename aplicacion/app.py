@@ -52,6 +52,14 @@ connection = psycopg2.connect(user="ufwllvzjcevwyu",
 def page_not_found(error):
     return render_template("error.html", error="Página no encontrada... te invitamos a ingresar una dirección valida."), 404
 
+@app.route("/index")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/")
+def upload_file():
+    return render_template("index.html")
 
 
 '''Consultas a la base de datos'''
