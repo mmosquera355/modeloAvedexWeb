@@ -17,6 +17,7 @@ Flask-Toastr==0.5.4
 flatbuffers==1.12
 gast==0.3.3
 grpcio==1.35.0
+gunicorn==20.0.4
 h5py==2.10.0
 idna==2.10
 importlib-metadata==3.4.0
