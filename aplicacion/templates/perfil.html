@@ -1,0 +1,242 @@
+{% extends "material/base.html" %} {% block content %}
+<link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+/>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"
+></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+/>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+
+
+
+<style>
+    img.circle {
+        margin: 15px 0;
+        align-content: center;
+    }
+    h7 {
+        margin: 15px 0;
+    }
+    i.icon-black {
+        color: black;
+    }
+    .materialboxed.materialbox-overlay {
+    border-radius: 2px;
+    opacity: 1;
+    display: inline;
+    margin: 1rem;
+    position: relative;
+    }
+    table {
+    width: 75%;
+    table-layout: fixed;
+    }
+   
+</style>
+<head>
+    {{ toastr.include_jquery() }} {{ toastr.include_toastr_css() }} {{
+    toastr.message() }}
+</head>
+<!-- Compiled and minified JavaScript -->
+
+<div class="navbar-fixed">
+    <nav class="nav-wrapper #00c853 green accent-4">
+        <div class="container">
+            <a href="#!" class="brand-logo center">AveDex</a>
+        </div>
+    </nav>
+</div>
+<!-- Navbar goes here -->
+
+<!-- Page Layout here -->
+<!-- <div class="container">-->
+<div class="row" align="center">
+    <div class="col s3" aling="center">
+        <!-- Grey navigation panel -->
+        <img
+            class="circle"
+            src="{{ url_for('static', filename='guacamaya.jpg')}}"
+            width="150"
+            height="150"
+        />
+        <div class="divider"></div>
+
+        <h4 class="black-text light">Bienvenido</h4>
+        <h7 class="black-text light">{{session['username']}}</h7>
+
+        <div class="collection #f1f8e9 light-green lighten-5">
+            <a href="#!" class="collection-item #f1f8e9 light-green lighten-5"
+                >Ver estadisticas de identificación</a
+            >
+            <a href="#!" class="collection-item #f1f8e9 light-green lighten-5"
+                >Identificar ave</a
+            >
+            <a href="#!" class="collection-item #f1f8e9 light-green lighten-5"
+                >Editar perfil</a
+            >
+            <a
+                href="#!"
+                class="collection-item #f1f8e9 light-green lighten-5"
+            ></a>
+        </div>
+        <div class="divider"></div>
+        <div class="collection #f1f8e9 light-green lighten-5">
+            <a href="#!" class="collection-item #f1f8e9 light-green lighten-5"
+                >Cerrar sesión</a
+            >
+        </div>
+    </div>
+    <div class="col s9">
+        <!-- Teal page content  -->
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s4">
+                        <a href="#test1">Identificar Ave</a>
+                    </li>
+                    <li class="tab col s4">
+                        <a class="active" href="#test2">Información del ave</a>
+                    </li>
+                    <li class="tab col s4"><a href="#test3">Galeria</a></li>
+                </ul>
+            </div>
+            <div id="test1" class="col s12">
+                <div class="row">
+                    <div class="input-field col s12 center">
+                        <img
+                            src="{{ url_for('static', filename='Avedex.png')}}"
+                            alt=""
+                            class="circle responsive-img valign profile-image-login"
+                            width="250"
+                            height="250"
+                        />
+                        <!--<h4 class="center login-form-text">
+                                Login
+                            </h4> \-->
+                    </div>
+                </div>
+                <form
+                    action="{{url_for('clasificar')}}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                >
+                    <h4 class="black-text light">
+                        Ingresa una imagen de un ave para ser identificada
+                    </h4>
+                    <div class="row margin">
+                        <div class="input-field col s12">
+                            <input class="light" type="file" name="file" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 center-align">
+                            <button
+                                class="btn #64dd17 #4dd0e1 cyan lighten-2"
+                                id="btnLoguear"
+                                name="btnLoguear"
+                            >
+                                <i class="mdi-action-add"></i>Identificar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="test2" class="col s12">
+
+                <h3 class= "black-text light">{{nombre}}</h3>
+                
+                <div class="container">
+                    <div class="row">
+                        <div class="col s4 m4"><img src="data:;base64,{{  imagenes[0][1] }}" alt="" class="materialboxed responsive-img"></div>  
+                        <div class="col s4 m4"><img src="data:;base64,{{  imagenes[1][1] }}" alt="" class="materialboxed responsive-img"></div>
+                        <div class="col s4 m4"><img src="data:;base64,{{  imagenes[2][1] }}" alt="" class="materialboxed responsive-img"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 m4"><img src="data:;base64,{{  imagenes[3][1] }}" alt="" class="materialboxed responsive-img"></div>  
+                        <div class="col s4 m4"><img src="data:;base64,{{  imagenes[4][1] }}" alt="" class="materialboxed responsive-img"></div>
+                        <div class="col s4 m4"><img src="data:;base64,{{  imagenes[5][1] }}" alt="" class="materialboxed responsive-img"></div>
+                    </div>
+                </div>
+
+                <table class="striped">
+                        <tr>
+                            <th scope="col">Dato</th>
+                            <th>Descripcion</th>
+                        </tr>
+                        <tr>
+                            <th>Nombre común</th>
+                            <td>{{ ave[1] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nombre científico</th>
+                            <td>{{ ave[2] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Género</th>
+                            <td>{{ ave[3] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Especie</th>
+                            <td>{{ ave[4] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Descripción</th>
+                            <td>{{ ave[5] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Orden</th>
+                            <td>{{ ave[6] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Colores</th>
+                            <td>{{ ave[7] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Familia (nombre)</th>
+                            <td>{{ familia[1] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Familia (descripción)</th>
+                            <td>{{ familia[2] }}</td>
+                        </tr>
+                </table>
+            </div>
+            <div id="test3" class="col s12">Test 3</div>
+        </div>
+    </div>
+</div>
+
+<!-- </div>-->
+
+{{ toastr.include_toastr_js() }}
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelectorAll(".modal");
+        var instances = M.Modal.init(elems);
+        var elemento = document.querySelectorAll("select");
+        var instancia = M.FormSelect.init(elemento);
+        var elementotres = document.querySelectorAll(".materialboxed");
+        var instancesTres = M.Materialbox.init(elementotres);
+        var elementodos = document.querySelectorAll(".carousel");
+        var instancesDos = M.Carousel.init(elementodos);
+        var elem = document.querySelector('.grid');
+        /*var msnry = new Masonry( elem, {
+        // options
+            itemSelector: '.grid-item',
+            columnWidth: 200
+        });*/
+    });
+</script>
+
+{% endblock %}

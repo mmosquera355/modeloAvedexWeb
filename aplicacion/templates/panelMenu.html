@@ -1,0 +1,84 @@
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+
+<style>
+    div.row {
+        margin: 90px 0;
+    }
+
+    i.icon-black {
+        color: black;
+    }
+</style>
+
+<body background="{{ url_for('static', filename='fondopaneldos.png')}}" style="
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    ">
+    <div class="navbar-fixed">
+        <nav class="nav-wrapper #00c853 green accent-4">
+            <div class="container">
+                <a href="#!" class="brand-logo">AveDex</a>
+
+                <ul class="right hide-on-med-and-down">
+                    <li>
+                        <h5 class="promo-caption light">
+                            {{session['username']}}
+                        </h5>
+                    </li>
+                    <li>
+                        <a href="{{url_for('layoutlogin')}}"><i
+                                class="medium material-icons left">account_circle</i>Cerrar sesión</a>
+                    </li>
+                    <!-- Dropdown Trigger -->
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="row">
+        <h2 class="header light center">Panel de control.</h2>
+
+        <div class="col s6">
+            <div class="center promo promo-example">
+                <i class="large material-icons icon-blue">group</i>
+                <h5 class="promo-caption light">Manejo de usuarios</h5>
+                <a href="{{url_for('usuarios')}}"
+                    class="waves-effect waves-light btn-large #00c853 green accent-4">Ver</a>
+            </div>
+        </div>
+
+        <!--<div class="col s4">
+            <div class="center promo promo-example">
+                <i class="large material-icons icon-yellow">grade</i>
+                <h5 class="promo-caption light">Manejo de misiones</h5>
+                <a href="{{url_for('misiones')}}"
+                    class="waves-effect waves-light btn-large #00c853 green accent-4">Ver</a>
+            </div>
+        </div>-->
+        <div class="col s6">
+            <div class="center promo promo-example">
+                <i class="large material-icons icon-red">add_circle</i>
+                <h5 class="promo-caption light">Manejo de aves</h5>
+                <a href="{{url_for('aves')}}"
+                    class="waves-effect waves-light btn-large #00c853 green accent-4">Ver</a>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- JavaScript -->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelectorAll(".parallax");
+        var instances = M.Parallax.init(elems);
+    });
+</script>
+{% endblock %}

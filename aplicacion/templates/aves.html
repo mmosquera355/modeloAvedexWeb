@@ -1,0 +1,555 @@
+{% block content %}
+
+<head>
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+</head>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<style>
+    div.card {
+        margin: 40px 0;
+    }
+
+    i.icon-black {
+        color: black;
+    }
+</style>
+
+<div class="navbar-fixed">
+    <nav class="nav-wrapper #00c853 green accent-4">
+        <div class="container">
+            <a href="#!" class="brand-logo center">AveDex</a>
+        </div>
+    </nav>
+</div>
+
+<ul id="slide-out" class="sidenav">
+    <li><div class="user-view">
+        <a href="#user"><img class="circle" src="{{ url_for('static', filename='Avedex.png')}}"></a>
+        <a href="#name"><span class="black-text name">Bienvenido</span></a>
+        <a href="#email"><span class="black-text email">{{session['username']}}</span></a>
+    </div></li>
+    <li><a href="{{url_for('layoutPanel')}}"><i class="material-icons">arrow_back</i>Panel de control</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Opciones</a></li>
+    <li><a href="{{url_for('usuarios')}}"><i class="material-icons">group</i>Usuarios</a></li>
+    <!--<li><a href="{{url_for('misiones')}}"><i class="material-icons">add_circle</i>Misiones</a></li>-->
+</ul>
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="medium material-icons">menu</i></a>
+<!-- Modal Trigger -->
+<!---------------------------------------------------------->
+
+<body background="{{ url_for('static', filename='fondoavetres.png')}}"
+    style="background-repeat: no-repeat; background-size: cover; background-attachment: fixed;">
+    <div class="section">
+        <div class="row container">
+            <h3 class="header light">Sección de aves</h3>
+            <h6 class="light">
+                Estimado administrador, la sección está compuesta por un tab de 3 secciones.
+                En la primera encontrará el registro de familias, compuesta
+                por una tabla con todas las familias de las aves registrados en el sistema.
+                Luego, está la sección de registro de aves, la cual también contiene una tabla
+                con todos los registros. Finalmente, la sección de registro de imagenes.
+            </h6>
+            <h5 class="light">
+                Descripción de la tabla:
+            </h5>
+            <h6 class="light">
+                En esta, encontrará tres botones; un (+) en la parte derecha superior
+                de la tabla que le dará la opción de añadir una nueva; un emoticon en forma de lápiz ✏️
+                por cada fila de la tabla, le permitirá editar cada registro. Finalmente, un emoticon
+                en forma de canasta 🗑, le permitirá eliminar el registro al que corresponda.
+            </h6>
+            <h6 class="light">
+                En la parte izquierda superior de la pantalla encontrará un emoticon en forma de menú, púlselo 
+                para ver las opciones que tiene disponible.
+            </h6>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s4 "><a href="#test1">Registro de familias</a></li>
+                <li class="tab col s4"><a class="active" href="#test2">Registro de aves</a></li>
+                <li class="tab col s4"><a href="#test3">Registro de imagenes</a></li>
+            </ul>
+        </div>
+        <div id="test1" class="col s12">
+            <div class="container">
+                <div class="row">
+                    <div class="col s12 m8 offset-m2">
+                        <div class="card">
+                            <a id="addFamilia"
+                                class="btn-floating btn-large waves-effect modal-trigger waves-light right #4dd0e1 cyan lighten-2">
+                                <i class="material-icons">add</i>
+                            </a>
+                            <div class="card-content">
+                                <h4 class="light">Familias</h4>
+                                <table class="centered striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Nombre</th>
+                                            <th>Descripcion</th>
+                                        </tr>
+                                    </thead>
+                                    {% for r in familias %}
+                                    <tr>
+                                        <td>{{ r[0] }}</td>
+                                        <td>{{ r[1] }}</td>
+                                        <td>{{ r[2] }}</td>
+                                        <td id="{{ r[0] }}">
+                                            <i class='material-icons editFamilia' data-idFam='{{ r[0] }}' data-nomFa='{{ r[1] }}'
+                                                data-desFa='{{ r[2] }}'>create</i>
+                                            <i class="material-icons icon-black deleteFamilia" data-idFam='{{ r[0] }}'>delete_forever</i>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="test2" class="col s12">
+            <a id="addAve"
+            class="btn-floating btn-large waves-effect modal-trigger waves-light right #4dd0e1 cyan lighten-2">
+            <i class="material-icons">add</i>
+            </a>
+            <h4 class="light center">Aves</h4>
+            <table class="centered striped">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Nombre común</th>
+                        <th>Nombre cientifico</th>
+                        <th>Genero</th>
+                        <th>Especie</th>
+                        <th>Descripcion</th>
+                        <th>Orden</th>
+                        <th>Colores principales</th>
+                        <th>Codigo familia</th>
+                    </tr>
+                </thead>
+                {% for r in aves %}
+                    <tr>
+                        <td>{{ r[0] }}</td>
+                        <td>{{ r[1] }}</td>
+                        <td>{{ r[2] }}</td>
+                        <td>{{ r[3] }}</td>
+                        <td>{{ r[4] }}</td>
+                        <td>{{ r[5] }}</td>
+                        <td>{{ r[6] }}</td>
+                        <td>{{ r[7] }}</td>
+                        <td>{{ r[8] }}</td>
+                        <td id="{{ r[0] }}">
+                            <i class='material-icons editAve' data-idave='{{ r[0] }}' data-nomCoAve='{{ r[1] }}'
+                                    data-nomCiAve='{{ r[2] }}' data-genAve='{{ r[3] }}' data-EsAve='{{ r[4] }}'
+                                    data-desAve='{{ r[5] }}' data-orAve='{{ r[6] }}' data-coloAve='{{ r[7] }}'
+                                    data-idFam='{{ r[8] }}'
+                            >create</i>
+                            <i class="material-icons icon-black deleteAve" data-idave='{{ r[0] }}'>delete_forever</i>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div id="test3" class="col s12">
+            <a id="addImagen"
+            class="btn-floating btn-large waves-effect modal-trigger waves-light right #4dd0e1 cyan lighten-2">
+            <i class="material-icons">add</i>
+            </a>
+
+            <h4 class="light center">Imagenes</h4>
+            <table class="centered striped">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Imagen</th>
+                        <th>Descripcion</th>
+                        <th>Codigo ave</th>
+                    </tr>
+                </thead>
+                {% for r in imagenes %}
+                    <tr>
+                        <td>{{ r[0] }}</td>
+                        <td><img src="data:;base64,{{  r[1] }}" width="100" height="100"/></td>
+                        <td>{{ r[2] }}</td>
+                        <td>{{ r[3] }}</td>
+                        <td id="{{ r[0] }}">
+                            <i class='material-icons editimagen' data-idimagen='{{ r[0] }}' data-desimg='{{ r[1] }}'
+                                    data-imagen='{{ r[2] }}' data-idav='{{ r[3] }}'
+                            >create</i>
+                            <i class="material-icons icon-black deleteimagen" data-idimagen='{{ r[0] }}'>delete_forever</i>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+</body>
+<!-- Modal Structure familia -->
+<div id="modal1Familia" class="modal">
+    <div class="modal-content">
+        <h4>Detalles de la familia</h4>
+        <br>
+        <form action="{{url_for('familia')}}" method="POST">
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input type="hidden" name="idfami" id="idfami">
+                    <input type="hidden" name="valorUno" id="valorUno">
+                    <input id="nom" type="text" name="nombre" required/>
+                    <label for="nom" class="center-align">Nombre</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input id="descripcion" type="text" name="descripcion" required />
+                    <label for="descripcion" class="center-align">descripcion</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 center-align">
+                    <button class="btn #64dd17 #4dd0e1 cyan lighten-2" id="btnLoguear" name="btnLoguear">
+                        <i class="mdi-action-add"></i>Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="modalEliminarFamilia" class="modal">
+    <div class="modal-content">
+        <h5 class="center light">¿Seguro que quiere eliminar este registro?</h5>
+        <br>
+        <form action="{{url_for('familia')}}" method="POST">
+            <div class="row margin">
+                <div class="input-field col s12 center-align">
+                    <input type="hidden" name="idfamiEl" id="idfamiEl">
+                    <input type="hidden" name="valor" id="valor">
+                        <button class="btn #64dd17 #4dd0e1 cyan lighten-2" id="btnLoguear" name="btnEliminar">
+                            <i class="mdi-action-add"></i>Eliminar
+                        </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Structure ave -->
+<div id="modalAve" class="modal">
+    <div class="modal-content">
+        <h4>Detalles del ave</h4>
+        <br>
+        <form action="{{url_for('aves')}}" method="POST">
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input type="hidden" name="idmave" id="idmave">
+                    <input type="hidden" name="valorUno" id="valorUno">
+                    <input id="nomCo" type="text" name="nomCo" required/>
+                    <label for="nomCo" class="center-align">Nombre común</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input id="nomCi" type="text" name="nomCi" required />
+                    <label for="nomCi" class="center-align">Nombre cientifico</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input id="genero" type="text" name="genero" required />
+                    <label for="genero" class="center-align">Género</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input id="especie" type="text" name="especie" required />
+                    <label for="especie" class="center-align">Especie</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input id="descripcionAve" type="text" name="descripcion" required />
+                    <label for="descripcion" class="center-align">Descripcion</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input id="orden" type="text" name="orden" required />
+                    <label for="orden" class="center-align">Orden</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input id="colores" type="text" name="colores" required />
+                    <label for="colores" class="center-align">Colores Principales</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <select id="idFamilia" name="idFamiliaAve">
+                        {% for x in familias %}
+                        <option value="{{ x[0] }}">{{ x[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Familia</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 center-align">
+                    <button class="btn #64dd17 #4dd0e1 cyan lighten-2" id="btnLoguear" name="btnLoguear">
+                        <i class="mdi-action-add"></i>Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="modalEliminarAve" class="modal">
+    <div class="modal-content">
+        <h5 class="center light">¿Seguro que quiere eliminar este registro?</h5>
+        <br>
+        <form action="{{url_for('aves')}}" method="POST">
+            <div class="row margin">
+                <div class="input-field col s12 center-align">
+                    <input type="hidden" name="idaveEl" id="idaveEl">
+                    <input type="hidden" name="valor" id="valor">
+                        <button class="btn #64dd17 #4dd0e1 cyan lighten-2" id="btnLoguear" name="btnEliminar">
+                            <i class="mdi-action-add"></i>Eliminar
+                        </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Modal Structure imagen -->
+<div id="modalimagen" class="modal">
+    <div class="modal-content">
+        <h4>Detalles de la imagen</h4>
+        <br>
+        <form action="{{url_for('imagen')}}" method="POST" enctype="multipart/form-data">
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input type="hidden" name="idimg" id="idimg">
+                    <input type="hidden" name="valorUno" id="valorUno">
+                    <input id="desimg" type="text" name="desimg" required/>
+                    <label for="desimg" class="center-align">Descripción de la imagen</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <input class="light" type = "file" name = "file" />
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <select id="idAveimg" name="idAveimg">
+                        {% for x in aves %}
+                        <option value="{{ x[0] }}">{{ x[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Ave</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 center-align">
+                    <button class="btn #64dd17 #4dd0e1 cyan lighten-2" id="btnLoguear" name="btnLoguear">
+                        <i class="mdi-action-add"></i>Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="modalEliminarImagen" class="modal">
+    <div class="modal-content">
+        <h5 class="center light">¿Seguro que quiere eliminar este registro?</h5>
+        <br>
+        <form action="{{url_for('imagen')}}" method="POST">
+            <div class="row margin">
+                <div class="input-field col s12 center-align">
+                    <input type="hidden" name="idimgEl" id="idimgEl">
+                    <input type="hidden" name="valor" id="valor">
+                        <button class="btn #64dd17 #4dd0e1 cyan lighten-2" id="btnLoguear" name="btnEliminar">
+                            <i class="mdi-action-add"></i>Eliminar
+                        </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{{ toastr.include_toastr_js() }}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.sidenav').sidenav();
+    });
+    //familia
+    $(' #addFamilia').on("click", function () {
+        $('#idfami').val(''); 
+        $('#nom').val(''); 
+        $('#descripcion').val(''); 
+        $('.modal').modal();
+        $('#modal1Familia').modal('open');
+        $('#valorUno').val('insertar');
+        $('#nom').focus();
+    });
+
+    $(document).on("click", '.editFamilia', function () {
+        var idFam = $(this).attr("data-idFam"); 
+        var nomFa = $(this).attr("data-nomFa"); 
+        var descripcionFa = $(this).attr("data-desFa"); 
+        $('#idfami').val(idFam);
+        $('.modal').modal(); 
+        $('#modal1Familia').modal('open');
+        $('#nom').val(nomFa); 
+        $('#descripcion').val(descripcionFa); 
+        $('#valorUno').val('actualizar');
+        $('#nom').focus();
+    }); 
+
+    $(document).on("click", '.deleteFamilia', function(){
+        var iduFami = $(this).attr("data-idFam");
+        $('.modal').modal(); 
+        $('#modalEliminarFamilia').modal('open');
+        $('#idfamiEl').val(iduFami);
+        $('#valor').val('eliminar');
+        /*$.ajax({
+            type: "POST",
+            url: "/eliminarUsuario",
+            async: false,
+            data: { mydata: idusr }
+        });*/
+    });
+
+    //ave
+    $(' #addAve').on("click", function () {
+        $('#idmave').val(''); 
+        $('#nomCo').val(''); 
+        $('#nomCi').val(''); 
+        $('#genero').val(''); 
+        $('#especie').val(''); 
+        $('#descripcionAve').val(''); 
+        $('#orden').val(''); 
+        $('#colores').val(''); 
+        $('#idFamilia').val(1); 
+        $('.modal').modal();
+        $('#modalAve').modal('open');
+        $('#valorUno').val('insertar');
+        $('#nomCo').focus();
+    });
+
+    $(document).on("click", '.editAve', function () {
+        var idAve = $(this).attr("data-idave"); 
+        var nomCoAve = $(this).attr("data-nomCoAve"); 
+        var nomCiAve = $(this).attr("data-nomCiAve"); 
+        var genAve = $(this).attr("data-genAve"); 
+        var EsAve = $(this).attr("data-EsAve"); 
+        var desAve = $(this).attr("data-desAve");
+        var orAve = $(this).attr("data-orAve"); 
+        var coloAve = $(this).attr("data-coloAve"); 
+        var idFam = $(this).attr("data-idFam"); 
+        $('#idmave').val(idAve);
+        $('#nomCo').val(nomCoAve); 
+        $('#nomCi').val(nomCiAve); 
+        $('#genero').val(genAve); 
+        $('#especie').val(EsAve); 
+        $('#descripcionAve').val(desAve); 
+        $('#orden').val(orAve); 
+        $('#colores').val(coloAve); 
+        $('#idFamilia').val(idFam); 
+        $('.modal').modal();
+        $('#modalAve').modal('open');
+        $('#valorUno').val('actualizar');
+        $('#nomCo').focus();
+    }); 
+
+    $(document).on("click", '.deleteAve', function(){
+        var idaveEl = $(this).attr("data-idave");
+        $('.modal').modal(); 
+        $('#modalEliminarAve').modal('open');
+        $('#idaveEl').val(idaveEl);
+        $('#valor').val('eliminar');
+        /*$.ajax({
+            type: "POST",
+            url: "/eliminarUsuario",
+            async: false,
+            data: { mydata: idusr }
+        });*/
+    });
+    //imagenes
+    $(' #addImagen').on("click", function () {
+        $('#idimg').val(''); 
+        $('#desimg').val(''); 
+        $('.modal').modal();
+        $('#modalimagen').modal('open');
+        $('#valorUno').val('insertar');
+        $('#desimg').focus();
+    });
+    $(document).on("click", '.editimagen', function () {
+        var idimg = $(this).attr("data-idimagen"); 
+        var imagen = $(this).attr("data-desimg"); 
+        var desimg = $(this).attr("data-imagen"); 
+        var idav = $(this).attr("data-idav"); 
+
+    
+        $('#idimg').val(idimg);
+        $('#desimg').val(desimg); 
+        $('#idAveimg').val(idav); 
+        $('.modal').modal();
+        $('#modalimagen').modal('open');
+        $('#valorUno').val('actualizar');
+        $('#desimg').focus();
+    }); 
+
+    $(document).on("click", '.deleteimagen', function(){
+        var idim = $(this).attr("data-idimagen");
+        $('.modal').modal(); 
+        $('#modalEliminarImagen').modal('open');
+        $('#idimgEl').val(idim);
+        $('#valor').val('eliminar');
+        /*$.ajax({
+            type: "POST",
+            url: "/eliminarUsuario",
+            async: false,
+            data: { mydata: idusr }
+        });*/
+    });
+
+</script>                                        
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelectorAll(".modal");
+        var instances = M.Modal.init(elems);
+        var elemento = document.querySelectorAll("select");
+        var instancia = M.FormSelect.init(elemento);
+        var elementodos = document.querySelectorAll('.carousel');
+        var instancesDos = M.Carousel.init(elementodos);
+        var instance = M.Tabs.init(el);
+
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.tabs').tabs();
+    });
+</script>
+{% endblock %}

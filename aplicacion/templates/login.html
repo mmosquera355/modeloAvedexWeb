@@ -1,0 +1,72 @@
+{% extends "material/base.html" %} 
+{% block content %}
+<head>
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+</head>
+<style>
+    .login-page{
+        margin-top:100px;
+    }
+    .login-page .card{
+        background: rgba(0, 0, 0, .6);
+        opacity: .6;
+
+    }
+</style>
+<!--<body 
+background="{{ url_for('static', filename='guacatres.jpg')}}"
+style="background-repeat: no-repeat; background-size: cover; background-attachment: fixed;"-->
+<div class="navbar-fixed">
+    <nav class="nav-wrapper #4caf50 green">
+        <div class="container">
+            <a href="#!" class="brand-logo">AveDex</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="{{url_for('registro')}}">Registro</a></li>
+                <li><a href="{{url_for('index')}}">Inicio</a></li>
+                <!-- Dropdown Trigger -->
+            </ul>
+        </div>
+    </nav>
+</div>
+<div id="login-page" class="row">
+    <div id="card opacity" class="col s6 offset-s3 z-depth-4 card-panel N/A transparent">
+        <form method="POST" action="{{url_for('login')}}">
+            <div class="row">
+                <div class="input-field col s12 center">
+                    <img src="{{ url_for('static', filename='Avedex.png')}}" alt=""
+                        class="circle responsive-img valign profile-image-login" 
+                        width="250" height="250"/>
+                    <!--<h4 class="center login-form-text">
+                        Login
+                    </h4> \-->
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="mdi-social-person-outline prefix"></i>
+                    <input id="username" type="text" name="username" />
+                    <label for="username" class="center-align">Username</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="mdi-action-lock-outline prefix"></i>
+                    <input id="password" type="password" name="password" />
+                    <label for="password">Password</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 center-align">
+                    <button class="btn #64dd17 light-green accent-4" id="btnLoguear" name="btnLoguear">
+                        <i class="mdi-action-add"></i>Ingresar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{ toastr.include_toastr_js() }}
+
+{% endblock %}
